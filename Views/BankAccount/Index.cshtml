@@ -1,0 +1,84 @@
+﻿@using TestProjectAISTown.DataContext.Entities;
+@using TestProjectAISTown.Utilities;
+@using TestProjectAISTown.Models.BankAccounts;
+
+@model PaginatedList<BankAccountViewModel>
+
+<div class="header">
+    <h1>Список банковских счетов</h1>
+</div>
+<div>
+    <a asp-action="Create" class="btn btn-success">Добавить счёт</a>
+</div>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Поиск по номеру счёта: <input type="text" maxlength="10" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Поиск" class="btn btn-primary" />
+        </p>
+    </div>
+</form>
+
+@if (Model.Count == 0)
+{
+    <h1 class="display-6">Данные не найдены</h1>
+}
+@if (Model.Count != 0)
+{
+    <div class="rowTable">
+        <table class="table" id="tableBankAccount">
+            <thead>
+                <tr>
+                    <td>Номер банковского счёта</td>
+                    <td>Владелец счёта</td>
+                    <td>Тип счёта</td>
+                    <td>Баланс счёта</td>
+                    <td>Валюта</td>
+                    <td>Статус счёта</td>
+                    <td>Взаимодействие</td>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr id="tableRow-@i">
+                        <input hidden id="bankAccount-@i" value="@Model[i].IdBankAccount" />
+                        <td>
+                            <a asp-action="OperationBankAccountInfo" asp-route-idBankAccount="@Model[i].IdBankAccount" asp-controller="OperationBankAccount">
+                                @Model[i].AccountNumber
+                            </a>
+                        </td>
+                        <td>@Model[i].CustomerName</td>
+                        <td>@Model[i].TypeName</td>
+                        <td>@Model[i].Balance</td>
+                        <td>@Model[i].CurrencyName</td>
+                        <td>@Model[i].StatusName</td>
+                        <td>
+                            <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model[i].IdBankAccount">Изменить</a>
+                            <button class="btn btn-secondary" asp-route-id="@Model[i].IdBankAccount" id="deleteButton-@i">Удалить</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+
+}
+
+<script src="~/js/bankAccount.js" asp-append-version="true"></script>

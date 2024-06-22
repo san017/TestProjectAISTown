@@ -1,0 +1,70 @@
+﻿@using TestProjectAISTown.Models.BankAccounts
+@model EditBankAccountModel
+
+
+<h1>Редактирование банковского счёта</h1>
+
+<form asp-action="edit" asp-controller="bankAccount" method="POST">
+    <div class="form-group">
+        <label>Id</label>
+        <input asp-for="BankAccount.Id" type="text" readonly></input>
+    </div>
+
+    <div class="form-group">
+        <label> Номер счёта</label>
+        <input required minlength="10" maxlength="10" asp-for="BankAccount.AccountNumber" type="text" onkeypress="return isNumberKey(event)"></input>
+    </div>
+
+    <div class="form-group">
+        <label>Баланс счёта</label>
+        <input class="number-only" required asp-for="BankAccount.Balance" type="text"></input>
+    </div>
+
+    <div class="form-group">
+        <label>Тип счёта</label>
+        <select required asp-for="BankAccount.AccountTypeId">
+            @foreach (var item in Model.AccountTypes)
+            {
+                var selectedString = item.Id == Model.BankAccount.AccountTypeId ? "selected" : "";
+                <!option class="active" value="@item.Id" @selectedString>@item.AccountTypeName</!option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Владелец счёта</label>
+        <select asp-for="BankAccount.CustomerId">
+            @foreach (var item in Model.Customers)
+            {
+                var selectedString = item.Id == Model.BankAccount.CustomerId ? "selected" : "";
+                <!option class="active" value="@item.Id" @selectedString>@item.ShortName</!option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Валюта счёта</label>
+        <select asp-for="BankAccount.CurrencyId">
+            @foreach (var item in Model.Currencies)
+            {
+                var selectedString = item.Id == Model.BankAccount.CurrencyId ? "selected" : "";
+                <!option class="active" value="@item.Id" @selectedString>@item.NameCurrency</!option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Статус счёта</label>
+        <select asp-for="BankAccount.StatusId">
+            @foreach (var item in Model.StatusAccounts)
+            {
+                var selectedString = item.Id == Model.BankAccount.StatusId ? "selected" : "";
+                <!option class="active" value="@item.Id" @selectedString>@item.StatusName</!option>
+            }
+        </select>
+    </div> 
+    <div class="card-footer">
+        <center>
+            <button class="btn btn-primary" asp-route-id="@Model.BankAccount.Id">Подтвердить изменения</button>
+            <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+        </center>
+    </div>
+</form>

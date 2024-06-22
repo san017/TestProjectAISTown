@@ -1,0 +1,28 @@
+﻿@using TestProjectAISTown.Models.BankAccountOperations
+@model CreateNewOperationAccountModel
+
+<div class="col-lg-12">
+
+    <h1>Страница добавления новой операции по счёту</h1>
+
+    <form asp-action="create">
+        <div class="form-group">
+            <label>Выберите тип операции</label>
+            <select required name="OperationTypeId">
+                <option value=""></option>
+                @foreach (var item in Model.OperationTypes)
+                {
+                    <!option class="active" value="@item.Id">@item.TypeOperationName</!option>
+                }
+            </select>
+        </div>
+        <div class="card-footer">
+            <center>
+                <button class="btn btn-primary" asp-route-idBankAccount="@Model.IdBankAccount">Создать новую операцию</button>
+                <a asp-action="OperationBankAccountInfo" asp-route-idBankAccount="@Model.IdBankAccount" class="btn btn-secondary">Отмена</a>
+            </center>
+        </div>
+    </form>
+</div>
+
+

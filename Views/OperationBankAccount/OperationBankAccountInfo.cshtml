@@ -1,0 +1,64 @@
+﻿@using TestProjectAISTown.DataContext.Entities;
+@using TestProjectAISTown.Utilities;
+@using TestProjectAISTown.Models.BankAccountOperations;
+@model OperationBankAccountViewModel;
+
+<div class="header">
+    <h1>Список операций по банковскому счёту</h1>
+</div>
+<div>
+    <a asp-action="Create" asp-route-idBankAccount="@Model.BankAccountId" class="btn btn-success">Добавить счёт</a>
+</div>
+
+
+@if (Model.OperationBankAccountInfos.Count == 0)
+{
+    <h1 class="display-6">Данные не найдены</h1>
+}
+@if (Model.OperationBankAccountInfos.Count != 0)
+{
+    <div class="rowTable">
+        <table class="table" id="tableOperationBankAccount">
+            <thead>
+                <tr>
+                    <td>Тип операции</td>
+                    <td>Номер счёта</td>
+                    <td>Дата операции</td>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.OperationBankAccountInfos.Count; i++)
+                {
+                    <tr id="tableRow-@i">
+                        <input hidden id="operationAccount-@i" value="@Model.OperationBankAccountInfos[i].OperationId" />
+                        <td>@Model.OperationBankAccountInfos[i].OperationName</td>
+                        <td>@Model.OperationBankAccountInfos[i].AccountNumber</td>
+                        <td>@Model.OperationBankAccountInfos[i].DateOperation</td>
+                        <td>
+                            <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.OperationBankAccountInfos[i].OperationId">Изменить</a>
+                            <button class="btn btn-secondary" asp-route-idBankAccount="@Model.OperationBankAccountInfos[i].OperationId" id="deleteButton-@i">Удалить</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    var prevDisabled = !Model.OperationBankAccountInfos.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.OperationBankAccountInfos.HasNextPage ? "disabled" : "";
+    <a asp-action="OperationBankAccountInfo"
+       asp-route-pageNumber="@(Model.OperationBankAccountInfos.PageIndex - 1)"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-action="OperationBankAccountInfo"
+       asp-route-pageNumber="@(Model.OperationBankAccountInfos.PageIndex + 1)"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+}
+<div>
+    <a class="btn btn-primary" asp-action="Index" , asp-controller="bankAccount">Вернуться к списку банковских счетов</a>
+</div>
+
+<script src="~/js/bankAccount.js" asp-append-version="true"></script>

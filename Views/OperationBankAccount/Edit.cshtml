@@ -1,0 +1,29 @@
+﻿@using TestProjectAISTown.Models.BankAccountOperations
+@model EditOperationBankAccountModel
+
+<h1>Редактирование операции банковского счёта</h1>
+
+<form asp-action="edit" asp-controller="OperationBankAccount" method="POST">
+    <input hidden asp-for="OperationBankAccount.Id" type="text"></input>
+    <input hidden asp-for="OperationBankAccount.DateOperation" type="text"></input>
+    <input hidden asp-for="OperationBankAccount.BankAccountId" type="text"></input>
+
+    <div class="form-group">
+        <label>Вид операции</label>
+        <select required asp-for="OperationBankAccount.OperationTypeId">
+            @foreach (var item in Model.OperationTypes)
+            {
+                var selectedString = item.Id == Model.OperationBankAccount.OperationTypeId ? "selected" : "";
+                <!option class="active" value="@item.Id" @selectedString>@item.TypeOperationName</!option>
+            }
+        </select>
+
+
+        <div class="card-footer">
+            <center>
+                <button class="btn btn-primary" asp-route-idBankAccount="@Model.OperationBankAccount.BankAccountId">Подтвердить изменения</button>
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </center>
+        </div>
+    </div>
+</form>

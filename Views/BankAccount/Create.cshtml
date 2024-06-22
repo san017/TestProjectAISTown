@@ -1,0 +1,72 @@
+﻿@using TestProjectAISTown.Models.BankAccounts
+@model СreateNewAccountModel
+
+<div class="col-lg-12">
+
+    <h1>Страница добавления нового счёта</h1>
+
+    <form asp-action="create" asp-controller="bankAccount">
+        <div class="form-group">
+            <label>Введите номер счёта</label>
+            <input required minlength="10" maxlength="10" name="AccountNumber" type="text" onkeypress="return isNumberKey(event)"></input>
+        </div>
+
+        <div class="form-group">
+            <label>Введите баланс счёта</label>
+            <input required name="Balance" type="text" onkeypress="return isNumberKey(event)"></input>
+        </div>
+
+        <div class="form-group">
+            <label>Выберите тип счёта</label>
+            <select required name="AccountTypeId">
+                <option value=""></option>
+                @foreach (var item in Model.SelectAccountTypeItems)
+                {
+                    <!option class="active" value="@item.Id">@item.AccountTypeName</!option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Выберите валюту</label>
+            <select required name="CurrencyId">
+                <option value=""></option>
+                @foreach (var item in Model.SelectCurrencyItems)
+                {
+                    <!option class="active" value="@item.Id">@item.NameCurrency</!option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Выберите клиента</label>
+            <select required name="CustomerId">
+                <option value=""></option>
+                @foreach (var item in Model.SelectCustomerItems)
+                {
+                    <!option class="active" value="@item.Id">@item.ShortName</!option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Выберите статус счёта</label>
+            <select required name="StatusId">
+                <option value=""></option>
+                @foreach (var item in Model.SelectStatusAccountItems)
+                {
+                    <!option class="active" value="@item.Id">@item.StatusName</!option>
+                }
+            </select>
+        </div>
+
+        <div class="card-footer">
+            <center>
+                <button class="btn btn-primary">Создать новый счёт</button>
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </center>
+        </div>
+
+    </form>
+
+</div>
+
